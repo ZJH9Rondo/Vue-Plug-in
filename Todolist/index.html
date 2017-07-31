@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Todolist-Vue</title>
+    <link rel="stylesheet" href="./public/style/main.css" media="screen" title="no title">
+    <link rel="stylesheet" href="./public/style/base.css" media="screen" title="no title">
+    <script src='../vue.js'></script>
+  </head>
+  <body>
+    <div id="todo" class="todoapp">
+      <header class="header">
+        <h1>todos</h1>
+        <input class="new-todo" type="text" name="name" placeholder="add what you want to do" v-model="newTodoText" v-on:keyup.enter="addTodo">
+      </header>
+      <section class="main">
+        <ul class="todo-list">
+          <li
+            class="todo"
+            v-for="(todo,index) in outtodos"
+            v-bind:class="{completed: todo.status}"
+            >
+              <div class="view">
+                <input class="toggle" type="checkbox" :checked="todo.status" v-on:click="Completed(index)">
+                <label>{{todo.title}}</label>
+                <button class="destroy" v-on:click="removeTodo(index)">
+              </div>
+          </li>
+        </ul>
+      </section>
+      <footer class="footer" v-show="newtodos.length">
+        <span class="todo-count">
+          <span></span>
+        </span>
+        <div class="filters">
+          <input type="button" value="All" v-on:click="getAll()">
+          <input type="button" value="Active" v-on:click="getActive">
+          <input type="button" value="Completed" v-on:click="getCompleted">
+        </div>
+        <input class="clear-completed" type="button" value="Clear" v-on:click="cleartodos"></input>
+      </footer>
+    </div>
+    <footer class="info">
+      <p>Double-click to edit a todo</p>
+      <p>Written by <a href="http://evanyou.me">Evan You</a></p>
+      <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+</footer>
+  </body>
+  <script src="./public/javascripts/application.js" charset="utf-8"></script>
+</html>
