@@ -21,19 +21,31 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   devtool: config.dev.devtool,
 
   // these devServer options should be customized in /config/index.js
+  /**
+   * 通过 DevServer 启动时才会生效，webPack本身并不识别此配置项
+  */
   devServer: {
-    clientLogLevel: 'warning',
+    clientLogLevel: 'warning', // 客户端日志等级
+    /**
+     * 任何请求都只会返回一个页面，这个适用于 单页应用
+     * 有多个单页应用组成,也可以分别配置
+     * 这里是将多有的请求根据URL，都返回 index.html
+    */
     historyApiFallback: {
       rewrites: [
         { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') },
       ],
     },
-    hot: true,
-    contentBase: false, // since we use CopyWebpackPlugin.
-    compress: true,
+    hot: true, // 模块热替换功能
+    inline: true, // 开启实时预览网页
+    contentBase: false, // 关闭暴露本地文件，与配置 DevServer HTTP服务器有关
+    compress: true, // 启用 gzip 压缩
+    /**
+     * 开发环境的相关配置，还可以设置 headers，访问白名单，以及HTTPS
+    */
     host: HOST || config.dev.host,
     port: PORT || config.dev.port,
-    open: config.dev.autoOpenBrowser,
+    open: config.dev.autoOpenBrowser, // 是否自动打开浏览器预览
     overlay: config.dev.errorOverlay
       ? { warnings: false, errors: true }
       : false,
@@ -44,6 +56,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       poll: config.dev.poll,
     }
   },
+  /**
+   * plugin 用于功能扩展
+   * 每一项都是一个 plugin 实例
+  */
   plugins: [
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
